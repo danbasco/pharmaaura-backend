@@ -5,10 +5,12 @@ import bcrypt from 'bcryptjs';
 import User from './models/User.js';
 import Product from './models/Product.js';
 
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/pharmaaura';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/pharmaaura';
 
 async function seed() {
-  await mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+  await mongoose.connect(MONGODB_URI, {
+        dbName: process.env.MONGODB_DB_NAME || 'PharmaAura',
+      });
   console.log('Connected to Mongo for seeding');
 
   // Create admin user if not exists
