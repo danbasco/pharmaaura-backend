@@ -13,6 +13,11 @@ app.use(express.json());
 
 app.use('/api', routes);
 
+app.get("/", (req, res) => {
+  res.send({ message: "PharmaAura Backend is Running." });
+});
+
+
 app.use(errorHandler);
 
 export default app;
