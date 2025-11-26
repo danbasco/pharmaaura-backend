@@ -1,6 +1,6 @@
-const Order = require('../models/Order');
+import Order from '../models/Order.js';
 
-exports.confirm = async (req, res) => {
+export const confirm = async (req, res) => {
   const { orderId } = req.body;
   const order = await Order.findById(orderId);
   if (!order) return res.status(404).json({ message: 'Order not found' });

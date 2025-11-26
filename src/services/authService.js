@@ -1,6 +1,6 @@
-const User = require('../models/User');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+import User from '../models/User.js';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 const signToken = (user) => {
   return jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET || 'secret', { expiresIn: '7d' });
@@ -37,7 +37,7 @@ const validatePassword = (password) => {
     return { valid: true };
 }
 
-exports.register = async ({ name, email, password, phone = "", address = ""}) => {
+export const register = async ({ name, email, password, phone = "", address = ""}) => {
 
   const exists = await User.findOne({ email });
   if (exists) throw Object.assign(new Error('Email already registered'), { status: 409 });
@@ -59,7 +59,7 @@ exports.register = async ({ name, email, password, phone = "", address = ""}) =>
   return { token, user: { id: user._id, name: user.name, email: user.email, role: user.role } };
 };
 
-exports.login = async ({ email, password }) => {
+export const login = async ({ email, password }) => {
 
   const user = await User.findOne({ email });
 
