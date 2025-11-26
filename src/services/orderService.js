@@ -1,8 +1,8 @@
-const Order = require('../models/Order');
-const Cart = require('../models/Cart');
-const Product = require('../models/Product');
+import Order from '../models/Order.js';
+import Cart from '../models/Cart.js';
+import Product from '../models/Product.js';
 
-exports.createOrder = async (userId, { address, deliveryMethod = 'retirada' }) => {
+export const createOrder = async (userId, { address, deliveryMethod = 'retirada' }) => {
   const cart = await Cart.findOne({ user: userId }).populate('items.product');
   if (!cart || cart.items.length === 0) throw Object.assign(new Error('Cart is empty'), { status: 400 });
 
@@ -29,7 +29,7 @@ exports.createOrder = async (userId, { address, deliveryMethod = 'retirada' }) =
   return order;
 };
 
-exports.getById = async (id, user) => {
+export const getById = async (id, user) => {
   const order = await Order.findById(id).populate('items.product');
   if (!order) return null;
   // only owner or admin
@@ -37,11 +37,11 @@ exports.getById = async (id, user) => {
   return order;
 };
 
-exports.getByUser = async (userId) => {
+export const getByUser = async (userId) => {
   return Order.find({ user: userId }).sort({ createdAt: -1 });
 };
 
-exports.track = async (id) => {
+export const track = async (id) => {
   const order = await Order.findById(id);
   if (!order) throw Object.assign(new Error('Order not found'), { status: 404 });
   // simulate progression based on elapsed seconds since creation

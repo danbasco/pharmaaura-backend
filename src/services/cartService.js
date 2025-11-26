@@ -1,11 +1,11 @@
-const Cart = require('../models/Cart');
-const Product = require('../models/Product');
+import Cart from '../models/Cart.js';
+import Product from '../models/Product.js';
 
-exports.getCart = async (userId) => {
+export const getCart = async (userId) => {
   return Cart.findOne({ user: userId }).populate('items.product');
 };
 
-exports.addItem = async (userId, productId, quantity) => {
+export const addItem = async (userId, productId, quantity) => {
   const product = await Product.findById(productId);
   if (!product) throw Object.assign(new Error('Product not found'), { status: 404 });
   if (product.stock < quantity) throw Object.assign(new Error('Not enough stock'), { status: 400 });
@@ -25,7 +25,7 @@ exports.addItem = async (userId, productId, quantity) => {
   return Cart.findById(cart._id).populate('items.product');
 };
 
-exports.removeItem = async (userId, productId) => {
+export const removeItem = async (userId, productId) => {
   const cart = await Cart.findOne({ user: userId });
   if (!cart) throw Object.assign(new Error('Cart not found'), { status: 404 });
   cart.items = cart.items.filter((i) => i.product.toString() !== productId.toString());
