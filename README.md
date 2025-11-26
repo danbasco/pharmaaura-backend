@@ -2,24 +2,10 @@
 
 Backend MVP for a simple pharmacy e-commerce built with Node.js, Express and MongoDB.
 
-Requirements:
-- Docker & Docker Compose
-
 Run the app:
 
 ```bash
-docker compose up --build
-# PharmaAura - Backend
-
-Backend MVP for a simple pharmacy e-commerce built with Node.js, Express and MongoDB.
-
-Requirements:
-- Docker & Docker Compose
-
-Run the app:
-
-```bash
-docker compose up --build
+npm run dev
 ```
 
 API (overview):
