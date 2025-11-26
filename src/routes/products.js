@@ -1,5 +1,6 @@
 import express from 'express';
 const router = express.Router();
+
 import * as productController from '../controllers/productController.js';
 import auth from '../middleware/auth.js';
 import isAdmin from '../middleware/isAdmin.js';
