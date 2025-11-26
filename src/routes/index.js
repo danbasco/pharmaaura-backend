@@ -1,12 +1,17 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
+import authRoutes from './auth.js';
+import productRoutes from './products.js';
+import cartRoutes from './cart.js';
+import orderRoutes from './orders.js';
+import paymentRoutes from './payments.js';
 
-router.use('/auth', require('./auth'));
-router.use('/products', require('./products'));
-router.use('/cart', require('./cart'));
-router.use('/orders', require('./orders'));
-router.use('/payments', require('./payments'));
+router.use('/auth', authRoutes);
+router.use('/products', productRoutes);
+router.use('/cart', cartRoutes);
+router.use('/orders', orderRoutes);
+router.use('/payments', paymentRoutes);
 
 router.get('/', (req, res) => res.json({ ok: true, name: 'PharmaAura API' }));
 
-module.exports = router;
+export default router;

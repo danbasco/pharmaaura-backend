@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const auth = require('../middleware/auth');
-const orderController = require('../controllers/orderController');
+import auth from '../middleware/auth.js';
+import * as orderController from '../controllers/orderController.js';
 
 router.use(auth);
 
@@ -10,4 +10,4 @@ router.get('/:id', orderController.getById);
 router.get('/user', orderController.getUserOrders);
 router.get('/track/:id', orderController.track);
 
-module.exports = router;
+export default router;

@@ -1,21 +1,21 @@
-const Product = require('../models/Product');
+import Product from '../models/Product.js';
 
-exports.getAll = async () => {
+export const getAll = async () => {
   return Product.find().lean();
 };
 
-exports.getById = async (id) => {
+export const getById = async (id) => {
   return Product.findById(id).lean();
 };
 
-exports.create = async (data) => {
+export const create = async (data) => {
   return Product.create(data);
 };
 
-exports.update = async (id, data) => {
+export const update = async (id, data) => {
   return Product.findByIdAndUpdate(id, data, { new: true });
 };
 
-exports.remove = async (id) => {
+export const remove = async (id) => {
   return Product.findByIdAndDelete(id);
 };

@@ -1,8 +1,9 @@
-require('dotenv').config();
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-const User = require('./models/User');
-const Product = require('./models/Product');
+import dotenv from 'dotenv';
+dotenv.config();
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
+import User from './models/User.js';
+import Product from './models/Product.js';
 
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/pharmaaura';
 
