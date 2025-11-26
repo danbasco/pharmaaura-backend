@@ -38,7 +38,7 @@ export const getById = async (id, user) => {
 };
 
 export const getByUser = async (userId) => {
-  return Order.find({ user: userId }).sort({ createdAt: -1 });
+  return await Order.find({ user: userId }).sort({ createdAt: -1 });
 };
 
 export const track = async (id) => {

@@ -5,17 +5,18 @@ export const getAll = async () => {
 };
 
 export const getById = async (id) => {
-  return Product.findById(id).lean();
+  return await Product.findById(id).lean();
 };
 
+// Falta fazer lógica de validação
 export const create = async (data) => {
-  return Product.create(data);
+  return await Product.create(data);
 };
 
 export const update = async (id, data) => {
-  return Product.findByIdAndUpdate(id, data, { new: true });
+  return await Product.findByIdAndUpdate(id, data, { new: true });
 };
 
 export const remove = async (id) => {
-  return Product.findByIdAndDelete(id);
+  return await Product.findByIdAndDelete(id);
 };
