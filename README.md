@@ -1,4 +1,4 @@
-# PharmaAura - Backend (Sprint 1 & 2)
+# PharmaAura - Backend
 
 Backend MVP for a simple pharmacy e-commerce built with Node.js, Express and MongoDB.
 
@@ -9,7 +9,7 @@ Run the app:
 
 ```bash
 docker compose up --build
-# PharmaAura - Backend (Sprint 1 & 2)
+# PharmaAura - Backend
 
 Backend MVP for a simple pharmacy e-commerce built with Node.js, Express and MongoDB.
 

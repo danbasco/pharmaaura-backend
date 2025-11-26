@@ -1,7 +1,7 @@
 {
   "name": "pharmaaura-backend",
-  "version": "1.0.0",
-  "description": "Backend for PharmaAura — simple pharmacy e-commerce (Sprint 1 & 2)",
+  "version": "1.0.1",
+  "description": "Backend for PharmaAura — simple pharmacy e-commerce",
   "main": "src/index.js",
   "engines": {
     "node": ">=18"
@@ -9,7 +9,8 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "seed": "node src/seed.js"
+    "seed": "node src/seed.js",
+    "generate-secret-key": "node -e \"console.log(require('crypto').randomBytes(32).toString('hex'))\""
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
