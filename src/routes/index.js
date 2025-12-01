@@ -4,6 +4,7 @@ import authRoutes from './auth.js';
 
 router.use('/auth', authRoutes);
 router.use('/products', productRoutes);
+router.use('/cart', cartRoutes);
 
 router.get('/', (req, res) => res.json({ ok: true, name: 'PharmaAura API' }));
 
