@@ -32,3 +32,11 @@ export const removeItem = async (userId, productId) => {
   await cart.save();
   return Cart.findById(cart._id).populate('items.product');
 };
+
+export const removeProductFromAllCarts = async (productId) => {
+  // Remove the product from any cart that contains it
+  await Cart.updateMany(
+    { 'items.product': productId },
+    { $pull: { items: { product: productId } } }
+  );
+};

@@ -1,4 +1,5 @@
 import Product from '../models/Product.js';
+import { removeProductFromAllCarts } from './cartService.js';
 
 export const getAll = async () => {
   return Product.find().lean();
@@ -18,5 +19,11 @@ export const update = async (id, data) => {
 };
 
 export const remove = async (id) => {
-  return await Product.findByIdAndDelete(id);
+  const removed = await Product.findByIdAndDelete(id);
+  if (!removed) throw Object.assign(new Error('Product not found'), { status: 404 });
+
+  // After deleting the product, remove it from all carts
+  await removeProductFromAllCarts(removed._id);
+
+  return removed;
 };
