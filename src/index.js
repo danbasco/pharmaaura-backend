@@ -6,8 +6,10 @@ import 'express-async-errors';
 import cors from 'cors';
 import routes from './routes/index.js';
 import errorHandler from './middleware/errorHandler.js';
+import database from './config/db.js';
 
 const app = express();
+database.connectDB();
 
 app.use(cors());
 app.use(express.json());
