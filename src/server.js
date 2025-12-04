@@ -1,32 +1,11 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-import express from 'express';
-import 'express-async-errors';
-import cors from 'cors';
-import routes from './routes/index.js';
-import errorHandler from './middleware/errorHandler.js';
+import app from './app.js';
 import database from './config/db.js';
 import mongoose from 'mongoose';
 
-const app = express();
-
-app.use(cors());
-app.use(express.json());
-app.use('/api', routes);
-
-app.get('/', (req, res) => {
-  res.send({ message: 'PharmaAura Backend is Running.' });
-});
-
-app.use((req, res) => {
-  res.status(404).json({ message: `Cannot ${req.method} ${req.path}` });
-});
-
-app.use(errorHandler);
-
 const PORT = process.env.PORT || 3000;
-
 let server = null;
 
 async function start() {
@@ -37,7 +16,6 @@ async function start() {
     });
   } catch (err) {
     console.error('Failed to start server:', err);
-    // do not process.exit here; allow process manager to inspect logs
     process.exit(1);
   }
 }
@@ -50,7 +28,6 @@ async function shutdown(signal) {
         console.log('HTTP server closed');
       });
     }
-    // Close mongoose connection if open
     try {
       if (mongoose.connection && mongoose.connection.readyState === 1) {
         await mongoose.disconnect();
@@ -59,8 +36,6 @@ async function shutdown(signal) {
     } catch (e) {
       console.warn('Error disconnecting MongoDB', e);
     }
-
-    // Close Redis client if present
     try {
       const redisClient = globalThis.__redisClient;
       if (redisClient && redisClient.quit) {
@@ -70,8 +45,6 @@ async function shutdown(signal) {
     } catch (e) {
       console.warn('Error closing Redis client', e);
     }
-
-    // give some time for sockets to close
     setTimeout(() => process.exit(0), 1000);
   } catch (e) {
     console.error('Error during shutdown', e);
