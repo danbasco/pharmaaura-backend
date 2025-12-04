@@ -3,13 +3,14 @@ import { removeProductFromAllCarts } from './cartService.js';
 import { getCache, setCache, delCache } from '../config/redis.js';
 
 export const getAll = async () => {
-  const cacheKey = 'products:all';
-  const cached = await getCache(cacheKey);
-  if (cached) return cached;
+  // const cacheKey = 'products:all';
+  // const cached = await getCache(cacheKey);
+  // if (cached) return cached;
 
+  console.log('Attempting to fetch products directly from database...');
   const products = await Product.find().lean();
-  // cache for 60 seconds
-  await setCache(cacheKey, products, 60);
+  console.log('Successfully fetched products.');
+  // await setCache(cacheKey, products, 60);
   return products;
 };
 
