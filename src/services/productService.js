@@ -1,8 +1,16 @@
 import Product from '../models/Product.js';
 import { removeProductFromAllCarts } from './cartService.js';
+import { getCache, setCache, delCache } from '../config/redis.js';
 
 export const getAll = async () => {
-  return Product.find().lean();
+  const cacheKey = 'products:all';
+  const cached = await getCache(cacheKey);
+  if (cached) return cached;
+
+  const products = await Product.find().lean();
+  // cache for 60 seconds
+  await setCache(cacheKey, products, 60);
+  return products;
 };
 
 export const getById = async (id) => {
@@ -11,11 +19,17 @@ export const getById = async (id) => {
 
 // Falta fazer lógica de validação
 export const create = async (data) => {
-  return await Product.create(data);
+  const created = await Product.create(data);
+  // invalidate list cache
+  await delCache('products:all');
+  return created;
 };
 
 export const update = async (id, data) => {
-  return await Product.findByIdAndUpdate(id, data, { new: true });
+  const updated = await Product.findByIdAndUpdate(id, data, { new: true });
+  await delCache('products:all');
+  if (updated) await delCache(`product:${id}`);
+  return updated;
 };
 
 export const remove = async (id) => {
@@ -24,6 +38,10 @@ export const remove = async (id) => {
 
   // After deleting the product, remove it from all carts
   await removeProductFromAllCarts(removed._id);
+
+  // invalidate caches
+  await delCache('products:all');
+  await delCache(`product:${id}`);
 
   return removed;
 };
