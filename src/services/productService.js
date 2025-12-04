@@ -7,8 +7,9 @@ export const getAll = async () => {
   const cached = await getCache(cacheKey);
   if (cached) return cached;
 
+  console.log('Attempting to fetch products directly from database...');
   const products = await Product.find().lean();
-  // cache for 60 seconds
+  console.log('Successfully fetched products.');
   await setCache(cacheKey, products, 60);
   return products;
 };
