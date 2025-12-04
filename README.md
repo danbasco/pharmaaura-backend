@@ -28,6 +28,24 @@ API (overview):
 
 See `.env.example` for environment variables.
 
+**Configuração do Redis (`.env.example`)**
+
+Adicione a variável abaixo ao seu arquivo de ambiente para habilitar cache via Redis.
+
+```env
+# Exemplo para produção (Redis Cloud / RedisLabs)
+REDIS_STORAGE_REDIS_URL="redis://default:PASSWORD@your-redis-host:6379"
+
+# Para desenvolvimento com `docker-compose` (padrão usado neste projeto)
+# quando o serviço `redis` estiver em execução via docker-compose:
+REDIS_STORAGE_REDIS_URL=redis://redis:6379
+```
+
+- Se `REDIS_STORAGE_REDIS_URL` estiver definido, a aplicação tentará conectar usando essa URL.
+- Se não estiver definido, o projeto já possui um fallback para `redis://redis:6379` (útil com `docker-compose`).
+- No Vercel: adicione `REDIS_STORAGE_REDIS_URL` em Settings → Environment Variables apontando para a sua instância Redis (Redis Cloud, Upstash, etc.).
+
+
 **Requests Example (cURL)**
 
 - Register:
