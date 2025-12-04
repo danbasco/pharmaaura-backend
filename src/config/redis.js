@@ -13,9 +13,18 @@ dotenv.config();
 // - uses a short connection timeout to avoid long blocking waits
 
 const providedUrl = process.env.REDIS_STORAGE_REDIS_URL;
-const urlsToTry = providedUrl
-  ? [providedUrl]
-  : ['redis://redis:6379', 'redis://127.0.0.1:6379'];
+let urlsToTry = [];
+
+if (providedUrl) {
+  urlsToTry = [providedUrl];
+} else if (process.env.NODE_ENV !== 'production') {
+  // in local/dev we try container host and loopback for convenience
+  urlsToTry = ['redis://redis:6379', 'redis://127.0.0.1:6379'];
+} else {
+  // in production (e.g. Vercel) don't attempt localhost/container addresses
+  // when no REDIS URL is provided — cache will be disabled.
+  urlsToTry = [];
+}
 
 const CONNECTION_TIMEOUT_MS = 3000;
 
@@ -51,6 +60,13 @@ async function ensureClient() {
   // reuse existing client stored on globalThis
   if (globalThis.__redisClient && globalThis.__redisClient.isReady) {
     return globalThis.__redisClient;
+  }
+  // if no candidate URLs (e.g. production without REDIS configured),
+  // don't attempt to connect — leave cache disabled.
+  if (!urlsToTry || urlsToTry.length === 0) {
+    globalThis.__redisClient = null;
+    console.info('No Redis URL configured; skipping Redis connection. Cache disabled.');
+    return null;
   }
 
   // try provided URL first, otherwise iterate candidates
