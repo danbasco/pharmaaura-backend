@@ -15,7 +15,16 @@ export default async function handler(req, res) {
       }
     }
 
-    // Delegate to the Express app (works because app is a function (req,res)).
+    // When deployed on Vercel the function is mounted at `/api` and the
+    // incoming `req.url` typically does NOT include the `/api` prefix. The
+    // Express `app` in `src/app.js` mounts the router under `/api` as well,
+    // so we must ensure the request path includes `/api` before delegating
+    // to the app. This keeps existing clients working (they call `/api/...`).
+    if (!req.url.startsWith('/api')) {
+      req.url = `/api${req.url}`;
+    }
+
+    // Delegate to the Express app (Express apps are request handlers).
     return app(req, res);
   } catch (err) {
     console.error('Serverless handler error', err);
